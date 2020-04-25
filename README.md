@@ -24,21 +24,19 @@ If **DR-MAN** eat all balls in board, he **WINS!!**
 ## Backlog
 ### User need an start game board to start playing!!
 - Draw board game, all walls.
-- Draw all eating ball.
+- Draw all eating pills.
 
-### User need a PAC-MAN to move it!!
+### User need a DR-MAN to move it!!
 - Draw **DR-MAN** in initial position and can move it.
-- Implment **DR-MAN** movement.
-- Implements stops with **DR-MAN** found a wall.
+- Implement **DR-MAN** movement, stops if found a wall or a **COVID**.
 
-### GHOSTs appears in board an try to attack PAC-MAN
+### COVIDs appears in board an try to attack DR-MAN
 - Draw **COVIDs** in start room.
-- Draw eating balls in board.
-- Implements randomize movement of **COVIDs**.
+- Implement randomize movement of **COVIDs**.
 - Hidden eaten balls by **DR-MAN** and set points in Board point
 
 ## User or COVIDs WINS!!!
-- Implements WIN or GAME OVER status...
+- Implement WIN or GAME OVER status...
 
 ## BONUS:
 - Implement bonus balls.
@@ -59,3 +57,9 @@ Class used to control propierties of PAC-MAN
 
 ### COVID
 Class used to manage Ghost
+
+## GitHub Repository
+[DR-MAN Game](https://github.com/mdemena/dr-man-game)
+
+## Kanban Board
+[DR-MAN Project](https://trello.com/b/5eR5hkTY/dr-man-game)
