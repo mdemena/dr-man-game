@@ -18,7 +18,7 @@ If **DR-MAN** eat all balls in board, he **WINS!!**
 ## MVP's
 ### User need an start game board to start playing!!
 ### User need a DR-MAN to move it!!
-### COVIDs appears in board an try to attack PAC-MAN
+### COVIDs appears in board an try to attack DR-MAN
 ### User or COVIDs WINS!!!
 
 ## Backlog
