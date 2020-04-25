@@ -5,29 +5,35 @@ My first development project in the Full Stack Web Development bootcamp of Ironh
 I will implement PAC-MAN Game.
 
 ## Description
-PAC-MAN can move in 4 directions using once of arrow keys. When we use an arrow key, PAC-MAN move automatically in selected direction to found a wall, don't need press permanently an arrow key.
+**PAC-MAN** must eat all balls in board without found a **GHOST** in their path. 
 
-GHOST move in randomize directions, can change their movement.
+If **PAC-MAN** found a **GHOST**, he dies and **LOST GAME!!!**
+If **PAC-MAN** eat all balls in board, he **WINS!!**
 
-When PAC-MAN found a GHOST, he died (snif, snif, ..) GAME OVER!!!
-When PAC-MAN eat all balls, he WINS!!!
+## How to play?
+**PAC-MAN** can move in 4 directions using once of arrow keys. When we use an arrow key, **PAC-MAN** move automatically in selected direction to found a wall, don't need press permanently an arrow key.
 
-## MVP 1:
+**GHOSTs** move in randomize directions, can change their movement.
+
+## BackLog
+
+### User need an start game board to start playing!!
 - Draw board game, all walls.
-- Draw PAC-MAN in initial position and can move it.
+- Draw all eating ball.
 
-## MVP 2:
-- Movement of PAC-MAN.
-- Implements stops with PAC-MAN found a wall.
-- Draw ghosts in start room.
+### User need a PAC-MAN to move it!!
+- Draw **PAC-MAN** in initial position and can move it.
+- Implment **PAC-MAN** movement.
+- Implements stops with **PAC-MAN** found a wall.
+
+### GHOSTs appears in board an try to attack PAC-MAN
+- Draw **GHOSTS** in start room.
 - Draw eating balls in board.
+- Implements randomize movement of **GHOSTS**.
+- Hidden eaten balls by **PAC-MAN** and set points in Board point
 
-## MVP 3:
-- Implements randomize movement of ghosts.
-- Hidden eaten balls by PAC-MAN and set points in Board point
-
-## MVP 4:
-- Implements WOIN or GAME OVER status...
+## User or GHOSTs WINS!!!
+- Implements WIN or GAME OVER status...
 
 
 ## BONUS:
