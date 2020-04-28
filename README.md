@@ -50,13 +50,13 @@ Class to manage all items need in game: Board, PAC-MAN and Ghost. And to managin
 A class to manage all walls and draw it.
 
 ### Figure
-Abstract class for difine attributes and functions to use in PAC-MAN and Ghost classes
+Abstract class for difine attributes and functions to use in DR-MAN and COVID classes
 
 ### DR-MAN
-Class used to control propierties of PAC-MAN 
+Class used to manage DR-MAN 
 
 ### COVID
-Class used to manage Ghost
+Class used to manage COVIDs
 
 ## GitHub Repository
 [DR-MAN Game](https://github.com/mdemena/dr-man-game)

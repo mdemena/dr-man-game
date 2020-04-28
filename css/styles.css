@@ -1,0 +1,12 @@
+canvas {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 15px solid orange;
+    background-color: black;
+}
+footer{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
