@@ -16,11 +16,11 @@ class Board {
     init(){
         //Creating internal walls
         //Inital box for COVIDs
-        this.walls.push(new Wall(this.canvas, 340, 355, 60, 20));
-        this.walls.push(new Wall(this.canvas, 320, 395, 20, 80));
-        this.walls.push(new Wall(this.canvas, 397.5, 435, 175.5, 20));
-        this.walls.push(new Wall(this.canvas, 475, 395, 20, 80));
-        this.walls.push(new Wall(this.canvas, 455, 355, 60, 20));
+        //this.walls.push(new Wall(this.canvas, 340, 355, 60, 20));
+        this.walls.push(new Wall(this.canvas, 300, 395, 20, 80));
+        this.walls.push(new Wall(this.canvas, 397.5, 435, 215, 20));
+        this.walls.push(new Wall(this.canvas, 495, 395, 20, 80));
+        //this.walls.push(new Wall(this.canvas, 455, 355, 60, 20));
 
         //Rest of the board
         ///Center
@@ -48,7 +48,7 @@ class Board {
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 615, 20, 100));
         //Left L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-145, 505, 110, 20)); 
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 425, 20, 155));
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 430, 20, 155));
         //Second Left Reverse L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-315, 360, 70, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-280, 432.5, 20, 165));
@@ -76,7 +76,7 @@ class Board {
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 615, 20, 100));
         //Left L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+145, 505, 110, 20)); 
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 425, 20, 155));
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 430, 20, 155));
         //Second Left Reverse L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+315, 360, 70, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+280, 432.5, 20, 165));
@@ -95,27 +95,22 @@ class Board {
 
 
         //Drawing start 3 x COVIDs
-        this.covids.push(new Covid(this.canvas, 355, 390, 40, this.speed, this.imgCOVID));
+        this.covids.push(new Covid(this.canvas, 340, 390, 40, this.speed, this.imgCOVID));
         this.covids.push(new Covid(this.canvas, 400, 390, 40, this.speed, this.imgCOVID));
-        this.covids.push(new Covid(this.canvas, 445, 390, 40, this.speed, this.imgCOVID));
+        this.covids.push(new Covid(this.canvas, 455, 390, 40, this.speed, this.imgCOVID));
 
-        this.context.save();
-        this.context.fillStyle = 'Yellow';
-        this.context.font = '40px Arial';
-        this.context.fillText('Ready?', 340, 480);
-        this.context.restore();
     }
-    update(){     
+    update(){
+        this.covids.forEach(covid => {
+            covid.update();
+            if(!covid.direction || covid.collisionToWall){
+                covid.pickNewDirection();
+                covid.collisionToWall = false;
+            }
+        })
     }
     draw(){
         this.context.clearRect(0,0, this.canvas.Width, this.canvas.height);
-        if (!this.start){
-            this.context.save();
-            this.context.fillStyle = 'Yellow';
-            this.context.font = '40px Arial';
-            this.context.fillText('Ready?', 340, 480);
-            this.context.restore();
-        }
         this.walls.forEach(wall => wall.draw());
         this.covids.forEach(covid => covid.draw());
     }

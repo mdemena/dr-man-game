@@ -12,17 +12,16 @@ const main = () => {
 
         const game = new Game(canvasElement, imgDRMAN, imgCOVID, imgPILL);
         game.gameOverCallback(buildGameOver);
-        
-        game.startLoop();
-        //game.drawCanvas();
+        game.drawCanvas();
 
         const setDrManDirection = (event) => {
-            game.board.start = true;
             game.drMan.setDirection(event.code);
+            if(!game.board.start){
+                game.gameStart();
+            }
         };
 
         document.addEventListener('keydown', setDrManDirection);
-
     };
 
     const buildGameOver = () => {

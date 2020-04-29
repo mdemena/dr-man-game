@@ -4,10 +4,11 @@ class Game {
   constructor(pCanvas, pImgDRMAN, pImgCOVID, pImgPILL) {
     this.canvas = pCanvas;
     this.context = this.canvas.getContext("2d");
-    this.speed = 5;
+    this.speed = 3;
     this.drMan = new DrMan(this.canvas, (this.canvas.width/2), 615, 40, this.speed, pImgDRMAN);
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
     this.isGameOver = false;
+    this.isStarted = false;
   }
 
   startLoop() {
@@ -18,12 +19,12 @@ class Game {
       this.updateCanvas();
       this.clearCanvas();
       this.drawCanvas();
-      if (!this.isGameOver) {
+      if (this.isStarted && !this.isGameOver) {
         window.requestAnimationFrame(loop);
       }
     };
 
-    window.requestAnimationFrame(loop);
+    if (this.isStarted) window.requestAnimationFrame(loop);
   }
 
   updateCanvas() {
@@ -36,6 +37,13 @@ class Game {
   }
 
   drawCanvas() {
+    if (!this.isStarted){
+      this.context.save();
+      this.context.fillStyle = 'Yellow';
+      this.context.font = '40px Arial';
+      this.context.fillText('Ready?', 340, 480);
+      this.context.restore();
+    }
     this.board.draw();
     this.drMan.draw();
   }
@@ -47,6 +55,12 @@ class Game {
             this.drMan.collisionToWall = true;
             this.drMan.setDirection('');
         }
+        this.board.covids.forEach(covid => {
+          if (covid.checkCollision(wall)){
+            covid.collisionToWall = true;
+            covid.setDirection('');
+          }
+        });
     });
     this.board.covids.forEach((covid) => {
         if (this.drMan.checkCollision(covid)) {
@@ -60,6 +74,13 @@ class Game {
           this.board.pills.splice(index, 1);
         }
     });
+  }
+  gameStart(){
+    if (!this.isStarted){
+      this.isStarted = true;
+      this.board.covids.forEach(covid => covid.setDirection('ArrowUp'));
+      this.startLoop();
+    }
   }
 
   gameOverCallback(callback) {

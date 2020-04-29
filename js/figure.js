@@ -13,7 +13,7 @@ class Figure {
         this.direction = '';
         this.speed = pSpeed;
         this.img = pImg ? pImg : new Image();
-        this.rotateAngle = 0;
+        this.collisionToWall = false;
     }
     update(){
         switch(this.direction){
@@ -33,18 +33,24 @@ class Figure {
         //Controlling figure don't go out of board.
         if ((this.centerX-(this.width/2)) < 0){
             this.centerX = (this.width/2);
+            this.setDirection('');
         } else if ((this.centerX+(this.width/2)) > this.canvas.width) {
             this.centerX = this.canvas.width - (this.width/2);
+            this.setDirection('');
         } else if ((this.centerY-(this.height/2)) < 0){
             this.centerY = (this.height/2);
+            this.setDirection('');
         } else if ((this.centerY+(this.height/2)) > this.canvas.height) {
             this.centerY = this.canvas.height - (this.height/2);
+            this.setDirection('');
         }
         this.x = this.centerX - (this.width / 2);
         this.y = this.centerY - (this.height / 2);
     }
     draw(){
-        //console.log(`${this.constructor.name}: {x: ${this.x}, y: ${this.y}}`);
+        // if (this instanceof Covid){
+        //     console.log(`${this.constructor.name}: {x: ${this.x}, y: ${this.y}, direction:${this.direction}}`);
+        // }
         this.context.save();
         this.context.beginPath();
         this.context.arc(this.centerX, this.centerY, 20, 0, Math.PI *2);
@@ -54,7 +60,7 @@ class Figure {
         this.context.restore();
     }
     setDirection(pDirection){
-        console.log(`New direction: ${pDirection}`);
+        console.log(`${this.constructor.name}: {x: ${this.x}, y: ${this.y}, direction:${this.direction}}`);
         this.direction = pDirection;
     }
     checkCollision(pFigure){
