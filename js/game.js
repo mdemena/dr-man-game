@@ -5,7 +5,7 @@ class Game {
     this.canvas = pCanvas;
     this.context = this.canvas.getContext("2d");
     this.speed = 5;
-    this.drMan = new DrMan(this.canvas, 400, 470, 40, this.speed, pImgDRMAN);
+    this.drMan = new DrMan(this.canvas, (this.canvas.width/2), 615, 40, this.speed, pImgDRMAN);
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
     this.isGameOver = false;
   }

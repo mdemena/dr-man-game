@@ -17,6 +17,7 @@ const main = () => {
         //game.drawCanvas();
 
         const setDrManDirection = (event) => {
+            game.board.start = true;
             game.drMan.setDirection(event.code);
         };
 
