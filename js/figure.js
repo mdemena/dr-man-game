@@ -60,7 +60,9 @@ class Figure {
         this.context.arc(0, 0, this.width/2, 0, Math.PI *2);
         this.context.closePath();
         this.context.clip();
-        this.context.rotate(this.rotationDegrees*Math.PI/180);
+        if (this.speed > 0){
+            this.context.rotate(this.rotationDegrees*Math.PI/180);
+        }
         // this.context.drawImage(this.img, this.x, this.y, this.width, this.height);
         this.context.drawImage(this.img, (this.width/2)*-1, (this.height/2)*-1, this.width, this.height);
         this.context.restore();

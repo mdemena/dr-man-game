@@ -10,7 +10,6 @@ class Board {
         this.imgPILLS = pImgPILLS;
         this.imgCOVID = pImgCOVID;
         this.speed = pSpeed;
-        this.start = false;
         this.init();
     }
     init(){
@@ -97,14 +96,12 @@ class Board {
         this.walls.push(new Wall(this.canvas, 800-95, 65, 70, 20)); 
     }
     initCOVIDS(){
-        //Drawing start 3 x COVIDs
         this.covids.push(new Covid(this.canvas, 340, 390, 40, this.speed, this.imgCOVID));
         this.covids.push(new Covid(this.canvas, 400, 390, 40, this.speed, this.imgCOVID));
         this.covids.push(new Covid(this.canvas, 455, 390, 40, this.speed, this.imgCOVID));
 
     }
     initPILLS(){
-        //Drawing Pills
         let centerWall = new Wall(this.canvas, 400, 450, 200, 350);
         for (let pillY = 25; pillY < this.canvas.height - 15; pillY+=42,40){
             for (let pillX = 25; pillX < this.canvas.width - 10; pillX+=47){
@@ -116,7 +113,6 @@ class Board {
                 }
             }
         }
-        //console.log(this.pillsCoord);
     }
     update(){
         this.covids.forEach(covid => {

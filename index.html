@@ -13,20 +13,9 @@
   </head>
   <body>
     <main>
-      <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-body">
-              <span>Ready?</span>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Ok</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <canvas id="game-screen" width="800" height="800"></canvas>
-      <div class="score">Score: <span>0</span> <button type="button" id="btnRestart" onclick="window.location.reload(false);" class="btn btn-warning">Restart</button></div>
+      <canvas class="top-screen" width="830" height="55"></canvas>
+      <canvas class="game-screen" width="800" height="800"></canvas>
+      <canvas class="bottom-screen" width="830" height="55"></canvas>
     </main>
     <script src="/js/figure.js"></script>
     <script src="/js/wall.js"></script>

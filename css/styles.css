@@ -6,8 +6,9 @@ canvas {
     margin-left: auto;
     margin-right: auto;
     background-color: black;
+}
+.game-screen {
     border: 15px solid orange;
-    border-radius: 20px;
 }
 .gameStart{
     width: 30%;

@@ -1,126 +1,182 @@
 'use strict';
 
 class Game {
-  constructor(pCanvas, pImgDRMAN, pImgCOVID, pImgPILL) {
-    this.canvas = pCanvas;
+  constructor(pCanvasGame, pCanvasHeader, pCanvasFooter , pImgDRMAN, pImgCOVID, pImgPILL) {
+    this.canvas = pCanvasGame;
     this.context = this.canvas.getContext("2d");
+    this.canvasH = pCanvasHeader;
+    this.contextH = this.canvasH.getContext("2d");
+    this.canvasF = pCanvasFooter;
+    this.contextF = this.canvasF.getContext("2d");
     this.speed = 3;
+    this.drMan = null;
+    this.board = null;
+    this.isGameOver = false;
+    this.isRunning = false;
+    this.highScore = 0;
+    this.score = 0;
+    this.drManLives = 3;
+    this.isDrManDead = false;
+    this.init(pImgDRMAN, pImgCOVID, pImgPILL);
+  }
+  init(pImgDRMAN, pImgCOVID, pImgPILL){
     this.drMan = new DrMan(this.canvas, (this.canvas.width/2), 615, 40, this.speed, pImgDRMAN);
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
-    this.isGameOver = false;
-    this.isStarted = false;
-    this.score = 0;
-    this.divScore = document.querySelector('.score span');
+    this.isRunning = this.isGameOver = this.isDrManDead = false;
+    this.highScore = window.localStorage.HighScore ? window.localStorage.HighScore : 0;
+    this.draw();
   }
-
   startLoop() {
 
     const loop = () => {
 
       this.checkAllCollisions();
-      this.updateCanvas();
-      this.clearCanvas();
-      this.drawCanvas();
-      if (this.isStarted && !this.isGameOver) {
+      this.update();
+      this.clear();
+      this.draw();
+
+      if (this.isRunning){
         if (this.board.pills.length===0){
-          this.gameWinns();
-        } else {
+          this.showMessage();
+        } 
+        else {
           window.requestAnimationFrame(loop);
         }
       } else {
-        this.gameOver();
+        this.showMessage();
       }
     };
 
-    if (this.isStarted) window.requestAnimationFrame(loop);
+    if (this.isRunning) window.requestAnimationFrame(loop);
   }
 
-  updateCanvas() {
+  update() {
     this.board.update();
     this.drMan.update();
   }
 
-  clearCanvas() {
+  clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.contextH.clearRect(0, 0, this.canvasH.width, this.canvasH.height);
+    this.contextF.clearRect(0, 0, this.canvasF.width, this.canvasF.height);
   }
 
-  drawCanvas() {
-    if (!this.isStarted){
+  draw() {
+    if (!this.isRunning){
       this.context.save();
       this.context.fillStyle = 'Yellow';
       this.context.font = "30px 'Press Start 2P'";
       this.context.fillText('Ready?', 320, 490);
       this.context.restore();
     }
+    //Header
+    this.contextH.font = "20px 'Press Start 2P'"
+    this.contextH.fillStyle = 'white'
+    this.contextH.fillText(`High Score: ${this.highScore}`,20,40);
+
+    this.contextH.font = "20px 'Press Start 2P'"
+    this.contextH.fillStyle = 'white'
+    this.contextH.fillText(`Score: ${this.score}`,this.canvasH.width - 250,40);
+    //Body
     this.board.draw();
     this.drMan.draw();
-  }
+
+    //Footer
+    for (let d=0; d < this.board.covids.length; d++){
+      let dr = new DrMan(this.canvasF, 30 + (d*50), 25, 40, 0, this.drMan.img);
+      dr.draw();
+    }
+  } 
 
   checkAllCollisions() {
     this.board.walls.forEach(wall => {
-        if (!this.drMan.collisionToWall && this.drMan.checkCollision(wall)) {
-            console.log('Collision with a Wall!!')
-            this.drMan.collisionToWall = true;
-            this.drMan.setDirection('');
+      if (!this.drMan.collisionToWall && this.drMan.checkCollision(wall)) {
+          this.drMan.collisionToWall = true;
+          this.drMan.setDirection('');
+      }
+      this.board.covids.forEach(covid => {
+        if (covid.checkCollision(wall)){
+          covid.collisionToWall = true;
+          covid.setDirection('');
         }
-        this.board.covids.forEach(covid => {
-          if (covid.checkCollision(wall)){
-            covid.collisionToWall = true;
-            covid.setDirection('');
-          }
-        });
+      });
     });
-    this.board.covids.forEach((covid) => {
-        if (this.drMan.checkCollision(covid)) {
-            console.log('Collision with a COVID!!')
+    this.board.covids.forEach((covid,idx) => {
+      if (this.drMan.checkCollision(covid)) {
+          this.board.covids.splice(idx,1);
+          if (this.board.covids.length===0){
             this.isGameOver = true;
-            this.gameOver();
-        }
+            this.isRunning = false;
+          } else {
+            this.isDrManDead = true;
+            this.isRunning = false;
+          }
+      }
     });
     this.board.pills.forEach((pill, index) => {
-        if (this.drMan.checkCollision(pill)) {
-          this.board.pills.splice(index, 1);
-          this.score += 10;
-          this.divScore.innerHTML = this.score;
-        }
+      if (this.drMan.checkCollision(pill)) {
+        this.board.pills.splice(index, 1);
+        this.score += 10;
+      }
     });
   }
   gameStart(){
-    if (!this.isStarted){
-      this.isStarted = true;
-      document.querySelector('#btnRestart').style.visibility = 'hidden';
+    if (!this.isRunning){
+      this.isRunning = true;
+      this.isGameOver = this.isDrManDead = false;
       this.board.covids.forEach(covid => covid.setDirection('ArrowUp'));
       this.startLoop();
     }
   }
-  gameOver(){
+  showReadyMessage(){
     this.context.fillStyle = 'black';
     this.context.fillRect(125,200,550,300);
     this.context.strokeStyle = 'orange';
     this.context.lineWidth = '20px';
     this.context.strokeRect(125,200,550,300);
     this.context.font = "30px 'Press Start 2P'"
-    this.context.fillStyle = 'red'
-    this.context.fillText('¡¡¡ GAME OVER !!!',150,300);
-    this.context.font = "30px 'Press Start 2P'"
-    this.context.fillStyle = 'white'
-    this.context.fillText(`Your Score: ${this.score}`,150,400);
-    this.board.start = this.isStarted = false;
-    document.querySelector('#btnRestart').style.visibility = 'visible';
+    this.context.fillStyle = 'yellow'
+    this.context.fillText(`Ready?`,150,400);
+    this.context.fillText('Press a key to start...',150,450);
+    this.isRunning = false;
   }
-  gameWinns(){
+  showMessage(){
     this.context.fillStyle = 'black';
     this.context.fillRect(125,200,550,300);
     this.context.strokeStyle = 'orange';
     this.context.lineWidth = '20px';
     this.context.strokeRect(125,200,550,300);
     this.context.font = "30px 'Press Start 2P'"
-    this.context.fillStyle = 'green'
-    this.context.fillText('¡¡¡ YOU WINS !!!',150,300);
+    if (this.isDrManDead) {
+      this.context.font = "30px 'Press Start 2P'"
+      this.context.fillStyle = 'red'
+      this.context.fillText('¡¡¡ OHHHH !!!',190,300);
+      this.context.font = "22px 'Press Start 2P'"
+      this.context.fillText('¡¡¡ DR-MAN IS DEAD !!!',150,350);
+    } else if (this.isGameOver){
+      this.context.fillStyle = 'red'
+      this.context.fillText('¡¡¡ GAME OVER !!!',150,300);
+    } else {
+      this.context.fillStyle = 'green'
+      this.context.fillText('¡¡¡ YOU WINS !!!',150,300);
+    }
     this.context.font = "30px 'Press Start 2P'"
-    this.context.fillStyle = 'white'
-    this.context.fillText(`Your Score: ${this.score}`,150,400);
-    this.board.start = this.isStarted = false;
-    document.querySelector('#btnRestart').style.visibility = 'visible';
+    if (this.isDrManDead){
+      this.context.fillStyle = 'white'
+      this.context.fillText(`Lives: ${this.board.covids.length}`,150,400);
+      this.context.font = "20px 'Press Start 2P'"
+      this.context.fillText('Press a key to continue...',150,450);
+    } else {
+      this.context.fillStyle = 'white'
+      if (this.score > this.highScore){
+        this.context.fillText(`NEW High Score: ${this.score}`,150,400);
+      } else {
+        this.context.fillText(`Your Score: ${this.score}`,150,400);
+      }
+      this.context.font = "20px 'Press Start 2P'"
+      this.context.fillText('Press a key to restart...',150,450);
+      window.localStorage.HighScore = this.score > this.highScore ? this.score : this.highScore;
+    }  
+    this.isRunning = false;
   }
 }

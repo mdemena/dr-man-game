@@ -8,16 +8,20 @@ imgDRMAN.src = './img/drman.png';
 const main = () => {
     
     const buildGameScreen = () => {
-        const canvasElement = document.querySelector('canvas');
+        const canvasHeader = document.querySelector('.top-screen');
+        const canvasGame = document.querySelector('.game-screen');
+        const canvasFooter = document.querySelector('.bottom-screen');
 
-        const game = new Game(canvasElement, imgDRMAN, imgCOVID, imgPILL);
-        game.drawCanvas();
+        const game = new Game(canvasGame, canvasHeader, canvasFooter, imgDRMAN, imgCOVID, imgPILL);
 
         const setDrManDirection = (event) => {
             game.drMan.setDirection(event.code);
-            if(!game.board.start){
-                game.gameStart();
+            if (game.isGameOver){
+                game.init(imgDRMAN, imgCOVID, imgPILL);
             }
+            if(!game.isRunning){
+                game.gameStart();
+            } 
         };
 
         document.addEventListener('keydown', setDrManDirection);
