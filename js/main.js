@@ -11,7 +11,6 @@ const main = () => {
         const canvasElement = document.querySelector('canvas');
 
         const game = new Game(canvasElement, imgDRMAN, imgCOVID, imgPILL);
-        game.gameOverCallback(buildGameOver);
         game.drawCanvas();
 
         const setDrManDirection = (event) => {
@@ -24,20 +23,7 @@ const main = () => {
         document.addEventListener('keydown', setDrManDirection);
     };
 
-    const buildGameOver = () => {
-        buildDom(`
-            <section class="game-over">
-                <h1>Game Over Screen</h1>
-                <button>Restart</button>
-            </section>
-        `);
-
-        const restartButton = document.querySelector('button');
-        restartButton.addEventListener('click', buildGameScreen);
-    };
-
     buildGameScreen();
-
 };
 
 window.addEventListener('load', main);

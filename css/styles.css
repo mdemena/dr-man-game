@@ -1,7 +1,44 @@
+body{
+    background-image: url('../img/background.png');
+}
 canvas {
     display: block;
     margin-left: auto;
     margin-right: auto;
     background-color: black;
     border: 15px solid orange;
+    border-radius: 20px;
+}
+.gameStart{
+    width: 30%;
+    z-index: 10;
+    font-family: 'Press Start 2P', Roboto, Arial;
+    color: yellow;
+    font-size: 48px;
+    margin: auto;
+    text-align: center;
+    background-color: black;
+    border: 5px solid orange;
+    border-radius: 15px;
+}
+.score{
+    display: block;
+    width: 825px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-top: 5px;
+    font-family: 'Press Start 2P', Roboto, Arial;
+    color: yellow;
+    font-size: 40px;
+    background-color: black;
+    border: 15px solid orange;
+    border-radius: 20px;
+}
+.score span{
+    color: white;
+}
+.score button{
+    visibility:hidden;
 }

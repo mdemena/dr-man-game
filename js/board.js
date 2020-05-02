@@ -14,13 +14,16 @@ class Board {
         this.init();
     }
     init(){
+        this.initWalls();
+        this.initCOVIDS();
+        this.initPILLS();
+    }
+    initWalls(){
         //Creating internal walls
         //Inital box for COVIDs
-        //this.walls.push(new Wall(this.canvas, 340, 355, 60, 20));
-        this.walls.push(new Wall(this.canvas, 300, 395, 20, 80));
+        this.walls.push(new Wall(this.canvas, 300, 400, 20, 80));
         this.walls.push(new Wall(this.canvas, 397.5, 435, 215, 20));
-        this.walls.push(new Wall(this.canvas, 495, 395, 20, 80));
-        //this.walls.push(new Wall(this.canvas, 455, 355, 60, 20));
+        this.walls.push(new Wall(this.canvas, 495, 400, 20, 80));
 
         //Rest of the board
         ///Center
@@ -39,7 +42,7 @@ class Board {
 
         ///Left
         //Left plain line
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-150, 735, 125, 20));
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-140, 735, 125, 20));
         //Reverse Left L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-315, 735, 70, 20));
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-280, 695, 20, 100));
@@ -47,7 +50,7 @@ class Board {
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 575, 200, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 615, 20, 100));
         //Left L 
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-145, 505, 110, 20)); 
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-150, 505, 100, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-190, 430, 20, 155));
         //Second Left Reverse L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)-315, 360, 70, 20)); 
@@ -67,7 +70,7 @@ class Board {
         
         ///Right
         //Left plain line
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+150, 735, 125, 20));
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+140, 735, 125, 20));
         //Reverse Left L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+315, 735, 70, 20));
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+280, 695, 20, 100));
@@ -75,7 +78,7 @@ class Board {
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 575, 200, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 615, 20, 100));
         //Left L 
-        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+145, 505, 110, 20)); 
+        this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+150, 505, 100, 20)); 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 430, 20, 155));
         //Second Left Reverse L 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+315, 360, 70, 20)); 
@@ -92,13 +95,28 @@ class Board {
         //Top wall 
         this.walls.push(new Wall(this.canvas, (this.canvas.width/2)+190, 30, 20, 100));
         this.walls.push(new Wall(this.canvas, 800-95, 65, 70, 20)); 
-
-
+    }
+    initCOVIDS(){
         //Drawing start 3 x COVIDs
         this.covids.push(new Covid(this.canvas, 340, 390, 40, this.speed, this.imgCOVID));
         this.covids.push(new Covid(this.canvas, 400, 390, 40, this.speed, this.imgCOVID));
         this.covids.push(new Covid(this.canvas, 455, 390, 40, this.speed, this.imgCOVID));
 
+    }
+    initPILLS(){
+        //Drawing Pills
+        let centerWall = new Wall(this.canvas, 400, 450, 200, 350);
+        for (let pillY = 25; pillY < this.canvas.height - 15; pillY+=42,40){
+            for (let pillX = 25; pillX < this.canvas.width - 10; pillX+=47){
+                let pill = new Pill(this.canvas, pillX, pillY, 20, this.imgPILLS);
+                if (!centerWall.checkCollision(pill)) {
+                    if (!this.walls.some(wall => pill.checkCollision(wall))){
+                        this.pills.push(pill);
+                    }
+                }
+            }
+        }
+        //console.log(this.pillsCoord);
     }
     update(){
         this.covids.forEach(covid => {
@@ -107,11 +125,12 @@ class Board {
                 covid.pickNewDirection();
                 covid.collisionToWall = false;
             }
-        })
+        });
     }
     draw(){
         this.context.clearRect(0,0, this.canvas.Width, this.canvas.height);
         this.walls.forEach(wall => wall.draw());
+        this.pills.forEach(pill => pill.draw());
         this.covids.forEach(covid => covid.draw());
     }
 }

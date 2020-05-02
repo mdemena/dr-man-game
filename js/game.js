@@ -9,6 +9,8 @@ class Game {
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
     this.isGameOver = false;
     this.isStarted = false;
+    this.score = 0;
+    this.divScore = document.querySelector('.score span');
   }
 
   startLoop() {
@@ -20,7 +22,13 @@ class Game {
       this.clearCanvas();
       this.drawCanvas();
       if (this.isStarted && !this.isGameOver) {
-        window.requestAnimationFrame(loop);
+        if (this.board.pills.length===0){
+          this.gameWinns();
+        } else {
+          window.requestAnimationFrame(loop);
+        }
+      } else {
+        this.gameOver();
       }
     };
 
@@ -40,8 +48,8 @@ class Game {
     if (!this.isStarted){
       this.context.save();
       this.context.fillStyle = 'Yellow';
-      this.context.font = '40px Arial';
-      this.context.fillText('Ready?', 340, 480);
+      this.context.font = "30px 'Press Start 2P'";
+      this.context.fillText('Ready?', 320, 490);
       this.context.restore();
     }
     this.board.draw();
@@ -49,7 +57,7 @@ class Game {
   }
 
   checkAllCollisions() {
-    this.board.walls.forEach((wall) => {
+    this.board.walls.forEach(wall => {
         if (!this.drMan.collisionToWall && this.drMan.checkCollision(wall)) {
             console.log('Collision with a Wall!!')
             this.drMan.collisionToWall = true;
@@ -66,24 +74,53 @@ class Game {
         if (this.drMan.checkCollision(covid)) {
             console.log('Collision with a COVID!!')
             this.isGameOver = true;
-            this.onGameOver();
+            this.gameOver();
         }
     });
     this.board.pills.forEach((pill, index) => {
         if (this.drMan.checkCollision(pill)) {
           this.board.pills.splice(index, 1);
+          this.score += 10;
+          this.divScore.innerHTML = this.score;
         }
     });
   }
   gameStart(){
     if (!this.isStarted){
       this.isStarted = true;
+      document.querySelector('#btnRestart').style.visibility = 'hidden';
       this.board.covids.forEach(covid => covid.setDirection('ArrowUp'));
       this.startLoop();
     }
   }
-
-  gameOverCallback(callback) {
-    this.onGameOver = callback;
+  gameOver(){
+    this.context.fillStyle = 'black';
+    this.context.fillRect(125,200,550,300);
+    this.context.strokeStyle = 'orange';
+    this.context.lineWidth = '20px';
+    this.context.strokeRect(125,200,550,300);
+    this.context.font = "30px 'Press Start 2P'"
+    this.context.fillStyle = 'red'
+    this.context.fillText('¡¡¡ GAME OVER !!!',150,300);
+    this.context.font = "30px 'Press Start 2P'"
+    this.context.fillStyle = 'white'
+    this.context.fillText(`Your Score: ${this.score}`,150,400);
+    this.board.start = this.isStarted = false;
+    document.querySelector('#btnRestart').style.visibility = 'visible';
+  }
+  gameWinns(){
+    this.context.fillStyle = 'black';
+    this.context.fillRect(125,200,550,300);
+    this.context.strokeStyle = 'orange';
+    this.context.lineWidth = '20px';
+    this.context.strokeRect(125,200,550,300);
+    this.context.font = "30px 'Press Start 2P'"
+    this.context.fillStyle = 'green'
+    this.context.fillText('¡¡¡ YOU WINS !!!',150,300);
+    this.context.font = "30px 'Press Start 2P'"
+    this.context.fillStyle = 'white'
+    this.context.fillText(`Your Score: ${this.score}`,150,400);
+    this.board.start = this.isStarted = false;
+    document.querySelector('#btnRestart').style.visibility = 'visible';
   }
 }
