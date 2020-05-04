@@ -1,19 +1,19 @@
 var sounds = {
   "dead" : {
-    src : "/sounds/Death.mp3",
+    src : "../sounds/Death.mp3",
     volume: 1
   },
   "init" : {
-    src : "/sounds/Intro.mp3",
+    src : "../sounds/Intro.mp3",
     volume: 1
   },
   "main" : {
-    src : "/sounds/Chomp.mp3",
+    src : "../sounds/Chomp.mp3",
     volume: 1,
     loop : true
   },
   "win" : {
-    src : "/sounds/Fruit.mp3",
+    src : "../sounds/Fruit.mp3",
     volume: 1
   }
 };
