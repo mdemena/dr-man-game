@@ -52,14 +52,16 @@ class Figure {
         this.x = this.centerX - (this.width / 2);
         this.y = this.centerY - (this.height / 2);
     }
-    draw(){
+    draw(rounded){
         this.context.save();
         this.context.translate(this.centerX, this.centerY);
-        this.context.beginPath();
-        // this.context.arc(this.centerX, this.centerY, this.width/2, 0, Math.PI *2);
-        this.context.arc(0, 0, this.width/2, 0, Math.PI *2);
-        this.context.closePath();
-        this.context.clip();
+        if (rounded){
+            this.context.beginPath();
+            this.context.arc(this.centerX, this.centerY, this.width/2, 0, Math.PI *2);
+            this.context.arc(0, 0, this.width/2, 0, Math.PI *2);
+            this.context.closePath();
+            this.context.clip();
+        }
         if (this.speed > 0){
             this.context.rotate(this.rotationDegrees*Math.PI/180);
         }

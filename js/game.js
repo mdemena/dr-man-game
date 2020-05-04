@@ -13,16 +13,22 @@ class Game {
     this.board = null;
     this.isGameOver = false;
     this.isRunning = false;
+    this.isWinner = false;
     this.highScore = 0;
     this.score = 0;
     this.drManLives = 3;
     this.isDrManDead = false;
     this.init(pImgDRMAN, pImgCOVID, pImgPILL);
+    this.runningAudio = new Sound("main");
+    this.deadAudio = new Sound("dead");
+    this.winAudio = new Sound("win");
+    this.isMuted = false;
   }
   init(pImgDRMAN, pImgCOVID, pImgPILL){
     this.drMan = new DrMan(this.canvas, (this.canvas.width/2), 615, 40, this.speed, pImgDRMAN);
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
-    this.isRunning = this.isGameOver = this.isDrManDead = false;
+    this.isRunning = this.isGameOver = this.isDrManDead = this.isWinner = false;
+    this.score = 0;
     this.highScore = window.localStorage.HighScore ? window.localStorage.HighScore : 0;
     this.draw();
   }
@@ -37,6 +43,10 @@ class Game {
 
       if (this.isRunning){
         if (this.board.pills.length===0){
+          this.isWinner = true;
+          this.isRunning = false;
+          this.runningAudio.stop();
+          this.winAudio,play();
           this.showMessage();
         } 
         else {
@@ -79,13 +89,16 @@ class Game {
     this.contextH.fillText(`Score: ${this.score}`,this.canvasH.width - 250,40);
     //Body
     this.board.draw();
-    this.drMan.draw();
+    this.drMan.draw(true);
 
     //Footer
     for (let d=0; d < this.board.covids.length; d++){
       let dr = new DrMan(this.canvasF, 30 + (d*50), 25, 40, 0, this.drMan.img);
-      dr.draw();
+      dr.draw(true);
     }
+    this.contextF.font = "20px 'Press Start 2P'"
+    this.contextF.fillStyle = 'white'
+    this.contextF.fillText(`F7 - Toggle music`,this.canvasF.width - 400,40);
   } 
 
   checkAllCollisions() {
@@ -105,9 +118,13 @@ class Game {
       if (this.drMan.checkCollision(covid)) {
           this.board.covids.splice(idx,1);
           if (this.board.covids.length===0){
+            this.runningAudio.stop();
+            this.deadAudio.play();
             this.isGameOver = true;
             this.isRunning = false;
           } else {
+            this.runningAudio.stop();
+            this.deadAudio.play();
             this.isDrManDead = true;
             this.isRunning = false;
           }
@@ -125,20 +142,10 @@ class Game {
       this.isRunning = true;
       this.isGameOver = this.isDrManDead = false;
       this.board.covids.forEach(covid => covid.setDirection('ArrowUp'));
+      this.drMan.setDirection('');
+      this.isMuted ? this.runningAudio.stop() : this.runningAudio.play();
       this.startLoop();
     }
-  }
-  showReadyMessage(){
-    this.context.fillStyle = 'black';
-    this.context.fillRect(125,200,550,300);
-    this.context.strokeStyle = 'orange';
-    this.context.lineWidth = '20px';
-    this.context.strokeRect(125,200,550,300);
-    this.context.font = "30px 'Press Start 2P'"
-    this.context.fillStyle = 'yellow'
-    this.context.fillText(`Ready?`,150,400);
-    this.context.fillText('Press a key to start...',150,450);
-    this.isRunning = false;
   }
   showMessage(){
     this.context.fillStyle = 'black';
@@ -169,13 +176,14 @@ class Game {
     } else {
       this.context.fillStyle = 'white'
       if (this.score > this.highScore){
+        this.context.font = "20px 'Press Start 2P'"
         this.context.fillText(`NEW High Score: ${this.score}`,150,400);
+        this.highScore = window.localStorage.HighScore = this.score;
       } else {
         this.context.fillText(`Your Score: ${this.score}`,150,400);
       }
       this.context.font = "20px 'Press Start 2P'"
       this.context.fillText('Press a key to restart...',150,450);
-      window.localStorage.HighScore = this.score > this.highScore ? this.score : this.highScore;
     }  
     this.isRunning = false;
   }

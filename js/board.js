@@ -126,7 +126,7 @@ class Board {
     draw(){
         this.context.clearRect(0,0, this.canvas.Width, this.canvas.height);
         this.walls.forEach(wall => wall.draw());
-        this.pills.forEach(pill => pill.draw());
-        this.covids.forEach(covid => covid.draw());
+        this.pills.forEach(pill => pill.draw(false));
+        this.covids.forEach(covid => covid.draw(false));
     }
 }
