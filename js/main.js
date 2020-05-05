@@ -7,14 +7,16 @@ imgDRMAN.src = './img/drman.png';
 const directionKeys = ['ArrowUp','ArrowDown','ArrowLeft', 'ArrowRight'];
 
 const main = () => {
-    new Sound("init").play();
+    const canvasHeader = document.querySelector('.top-screen');
+    const canvasGame = document.querySelector('.game-screen');
+    const canvasFooter = document.querySelector('.bottom-screen');
+
+    const game = new Game(canvasGame, canvasHeader, canvasFooter, imgDRMAN, imgCOVID, imgPILL);
+    game.drawWelcome();
 
     const buildGameScreen = () => {
-        const canvasHeader = document.querySelector('.top-screen');
-        const canvasGame = document.querySelector('.game-screen');
-        const canvasFooter = document.querySelector('.bottom-screen');
-
-        const game = new Game(canvasGame, canvasHeader, canvasFooter, imgDRMAN, imgCOVID, imgPILL);
+        game.clear();
+        game.draw();
 
         const setDrManDirection = (event) => {
             if (event.key==="F7"){
@@ -40,7 +42,9 @@ const main = () => {
         document.addEventListener('keydown', setDrManDirection);
     };
 
-    buildGameScreen();
+    let initAudio = document.querySelector("audio");
+    initAudio.addEventListener('ended', buildGameScreen);
+    initAudio.play();
 };
 
 window.addEventListener('load', main);

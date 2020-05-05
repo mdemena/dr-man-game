@@ -100,7 +100,18 @@ class Game {
     this.contextF.fillStyle = 'white'
     this.contextF.fillText(`F7 - Toggle music`,this.canvasF.width - 400,40);
   } 
-
+  drawWelcome() {
+    this.clear();
+    this.context.font = "30px 'Press Start 2P'"
+    this.context.fillStyle = 'green'
+    this.context.fillText("¡¡¡ Welcome to DR-MAN !!!", 25, 300);
+    this.context.font = "20px 'Press Start 2P'"
+    this.context.fillText("A COVID edition of famous PAC-MAN game", 25, 400);
+    new DrMan(this.canvas, 380, 480, 40, 0, this.drMan.img).draw(true);
+    new Covid(this.canvas, 320, 550, 40, 0, this.board.imgCOVID).draw();
+    new Covid(this.canvas, 380, 550, 40, 0, this.board.imgCOVID).draw();
+    new Covid(this.canvas, 440, 550, 40, 0, this.board.imgCOVID).draw();
+  } 
   checkAllCollisions() {
     this.board.walls.forEach(wall => {
       if (!this.drMan.collisionToWall && this.drMan.checkCollision(wall)) {
