@@ -18,7 +18,6 @@ class Wall extends Figure {
     draw(){
         this.context.save();
         this.context.fillStyle ='orange'; 
-        //this.context.fillRect(this.x, this.y, this.width , this.height);
         this.context.roundRect(this.x, this.y, this.width , this.height, 7).fill();
         this.context.restore();
     }

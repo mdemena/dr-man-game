@@ -100,17 +100,24 @@ class Game {
     this.contextF.fillStyle = 'white'
     this.contextF.fillText(`F7 - Toggle music`,this.canvasF.width - 400,40);
   } 
-  drawWelcome() {
+  drawWelcome(pImgsDRMAN, pImgCOVID) {
     this.clear();
     this.context.font = "30px 'Press Start 2P'"
     this.context.fillStyle = 'green'
-    this.context.fillText("¡¡¡ Welcome to DR-MAN !!!", 25, 300);
+    this.context.fillText("¡¡¡ Welcome to DR-MAN !!!", 25, 200);
     this.context.font = "20px 'Press Start 2P'"
-    this.context.fillText("A COVID edition of famous PAC-MAN game", 25, 400);
-    new DrMan(this.canvas, 380, 480, 40, 0, this.drMan.img).draw(true);
-    new Covid(this.canvas, 320, 550, 40, 0, this.board.imgCOVID).draw();
-    new Covid(this.canvas, 380, 550, 40, 0, this.board.imgCOVID).draw();
-    new Covid(this.canvas, 440, 550, 40, 0, this.board.imgCOVID).draw();
+    this.context.fillText("A COVID edition of famous PAC-MAN game", 25, 300);
+    this.context.fillText("Select your DR-MAN!!!", 200, 350);
+    pImgsDRMAN.forEach((img,idx) => new DrMan(this.canvas, 320 + (idx*60), 400, 40, 0, img).draw(true));
+    this.context.font = "20px 'Press Start 2P'"
+    this.context.fillText("Press 1,2 or 3 !!!", 200, 450);
+    new Covid(this.canvas, 320, 500, 40, 0, pImgCOVID).draw();
+    new Covid(this.canvas, 380, 500, 40, 0, pImgCOVID).draw();
+    new Covid(this.canvas, 440, 500, 40, 0, pImgCOVID).draw();
+    this.context.fillText("Game instructions:", 100, 600);
+    this.context.fillText("1.- Press space bar to start game", 100, 650);
+    this.context.fillText("2.- Use arrow keys to move DR-MAN", 100, 700);
+    this.context.fillText("3.- ENJOY!!!", 100, 750);
   } 
   checkAllCollisions() {
     this.board.walls.forEach(wall => {

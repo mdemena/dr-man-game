@@ -2,8 +2,12 @@ const imgPILL = new Image();
 imgPILL.src = './img/medicine.png';
 const imgCOVID = new Image();
 imgCOVID.src = './img/coronavirus.png';
-const imgDRMAN = new Image();
-imgDRMAN.src = './img/drman.png';
+let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png']
+arrImgDrMan = arrImgDrMan.map(src => {
+    let pImg = new Image();
+    pImg.src = src;
+    return pImg;
+});
 const directionKeys = ['ArrowUp','ArrowDown','ArrowLeft', 'ArrowRight'];
 
 const main = () => {
@@ -11,12 +15,26 @@ const main = () => {
     const canvasGame = document.querySelector('.game-screen');
     const canvasFooter = document.querySelector('.bottom-screen');
 
-    const game = new Game(canvasGame, canvasHeader, canvasFooter, imgDRMAN, imgCOVID, imgPILL);
-    game.drawWelcome();
+    const game = new Game(canvasGame, canvasHeader, canvasFooter, arrImgDrMan[0], imgCOVID, imgPILL);
+    game.drawWelcome(arrImgDrMan, imgCOVID);
 
-    const buildGameScreen = () => {
+    const buildGameScreen = (event) => {
+        let imgDRMAN = new Image();
+        switch (event.key){
+            case "2":
+                imgDRMAN = arrImgDrMan[1]
+                break;
+            case "3":
+                imgDRMAN = arrImgDrMan[2]
+                break;
+            default:    
+            imgDRMAN = arrImgDrMan[0]
+        }
+        game.init(imgDRMAN, imgCOVID, imgPILL);
         game.clear();
         game.draw();
+        
+        document.removeEventListener('keydown', buildGameScreen);
 
         const setDrManDirection = (event) => {
             if (event.key==="F7"){
@@ -42,9 +60,7 @@ const main = () => {
         document.addEventListener('keydown', setDrManDirection);
     };
 
-    let initAudio = document.querySelector("audio");
-    initAudio.addEventListener('ended', buildGameScreen);
-    initAudio.play();
+    document.addEventListener('keydown', buildGameScreen);
 };
 
 window.addEventListener('load', main);
