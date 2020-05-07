@@ -2,7 +2,7 @@ const imgPILL = new Image();
 imgPILL.src = './img/medicine.png';
 const imgCOVID = new Image();
 imgCOVID.src = './img/coronavirus.png';
-let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png']
+let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png','./img/pacman.png']
 arrImgDrMan = arrImgDrMan.map(src => {
     let pImg = new Image();
     pImg.src = src;
@@ -27,8 +27,11 @@ const main = () => {
             case "3":
                 imgDRMAN = arrImgDrMan[2]
                 break;
+            case "4":
+                imgDRMAN = arrImgDrMan[3]
+                break;
             default:    
-            imgDRMAN = arrImgDrMan[0]
+                imgDRMAN = arrImgDrMan[0]
         }
         game.init(imgDRMAN, imgCOVID, imgPILL);
         game.clear();
