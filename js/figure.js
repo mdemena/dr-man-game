@@ -15,7 +15,7 @@ class Figure {
         this.img = pImg ? pImg : new Image();
         this.collisionToWall = false;
         this.rotationDegrees = 0;
-        this.refinementPosition = 1.2;
+        this.refinementPosition = 1.3;
     }
     update(){
         switch(this.direction){

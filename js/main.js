@@ -2,6 +2,7 @@ const imgPILL = new Image();
 imgPILL.src = './img/medicine.png';
 const imgCOVID = new Image();
 imgCOVID.src = './img/coronavirus.png';
+//let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png','./img/pacman.png','./img/habitaclia.png','./img/fotocasa.png']
 let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png','./img/pacman.png']
 arrImgDrMan = arrImgDrMan.map(src => {
     let pImg = new Image();
@@ -14,13 +15,14 @@ const main = () => {
     const canvasHeader = document.querySelector('.top-screen');
     const canvasGame = document.querySelector('.game-screen');
     const canvasFooter = document.querySelector('.bottom-screen');
+    let setIntervalID = null;
 
     const game = new Game(canvasGame, canvasHeader, canvasFooter, arrImgDrMan[0], imgCOVID, imgPILL);
     game.drawWelcome(arrImgDrMan, imgCOVID);
 
     const buildGameScreen = (event) => {
         let imgDRMAN = new Image();
-        switch (event.key){
+        switch (event.key.toLowerCase()){
             case "2":
                 imgDRMAN = arrImgDrMan[1]
                 break;
@@ -29,6 +31,14 @@ const main = () => {
                 break;
             case "4":
                 imgDRMAN = arrImgDrMan[3]
+                break;
+            case "h":
+                imgDRMAN = arrImgDrMan[4]
+                imgPILL.src = './img/idealista.png';
+                break;
+            case "f":
+                imgDRMAN = arrImgDrMan[5]
+                imgPILL.src = './img/idealista.png';
                 break;
             default:    
                 imgDRMAN = arrImgDrMan[0]
@@ -55,12 +65,17 @@ const main = () => {
                     game.init(imgDRMAN, imgCOVID, imgPILL);
                 }
                 if(!game.isRunning){
+                    game.clockTimeID = setInterval(updateClock, 1000);
                     game.gameStart();
                 }
             }
         };
 
         document.addEventListener('keydown', setDrManDirection);
+    };
+
+    const updateClock = () => {
+        game.clockTime++;
     };
 
     document.addEventListener('keydown', buildGameScreen);

@@ -1,5 +1,4 @@
 'use strict';
-
 class Game {
   constructor(pCanvasGame, pCanvasHeader, pCanvasFooter , pImgDRMAN, pImgCOVID, pImgPILL) {
     this.canvas = pCanvasGame;
@@ -23,12 +22,15 @@ class Game {
     this.deadAudio = new Sound("dead");
     this.winAudio = new Sound("win");
     this.isMuted = false;
+    this.clockTime = 0;
+    this.clockTimeID = null;
   }
   init(pImgDRMAN, pImgCOVID, pImgPILL){
     this.drMan = new DrMan(this.canvas, (this.canvas.width/2), 615, 40, this.speed, pImgDRMAN);
     this.board = new Board(this.canvas, this.speed, pImgPILL, pImgCOVID);
     this.isRunning = this.isGameOver = this.isDrManDead = this.isWinner = false;
     this.score = 0;
+    this.clockTime = 0;
     this.highScore = window.localStorage.HighScore ? window.localStorage.HighScore : 0;
     this.draw();
   }
@@ -53,6 +55,7 @@ class Game {
           window.requestAnimationFrame(loop);
         }
       } else {
+        clearInterval(this.clockTimeID);
         this.showMessage();
       }
     };
@@ -98,7 +101,11 @@ class Game {
     }
     this.contextF.font = "20px 'Press Start 2P'"
     this.contextF.fillStyle = 'white'
-    this.contextF.fillText(`F7 - Toggle music`,this.canvasF.width - 400,40);
+    this.contextF.fillText(`Time: ${sec2time(this.clockTime)}`, 200, 40);
+
+    this.contextF.font = "20px 'Press Start 2P'"
+    this.contextF.fillStyle = 'white'
+    this.contextF.fillText(`F7 - Toggle music`,this.canvasF.width - 350,40);
   } 
   drawWelcome(pImgsDRMAN, pImgCOVID) {
     this.clear();
@@ -111,9 +118,12 @@ class Game {
     pImgsDRMAN.forEach((img,idx) => new DrMan(this.canvas, 320 + (idx*60), 400, 40, 0, img).draw(true));
     this.context.font = "20px 'Press Start 2P'"
     this.context.fillText("Press 1, 2, 3 or 4 !!!", 200, 450);
-    new Covid(this.canvas, 350, 500, 40, 0, pImgCOVID).draw();
-    new Covid(this.canvas, 410, 500, 40, 0, pImgCOVID).draw();
-    new Covid(this.canvas, 470, 500, 40, 0, pImgCOVID).draw();
+    // this.context.font = "10px 'Press Start 2P'"
+    // this.context.fillText("If you are an Habitaclia or Fotocasa worker use your special key!!", 100, 475);
+    new Covid(this.canvas, 350, 520, 40, 0, pImgCOVID).draw();
+    new Covid(this.canvas, 410, 520, 40, 0, pImgCOVID).draw();
+    new Covid(this.canvas, 470, 520, 40, 0, pImgCOVID).draw();
+    this.context.font = "20px 'Press Start 2P'"
     this.context.fillText("Game instructions:", 100, 600);
     this.context.fillText("1.- Press space bar to start game", 100, 650);
     this.context.fillText("2.- Use arrow keys to move DR-MAN", 100, 700);
@@ -205,4 +215,17 @@ class Game {
     }  
     this.isRunning = false;
   }
+
+}
+
+function sec2time(timeInSeconds) {
+  var pad = function(num, size) { return ('000' + num).slice(size * -1); },
+  time = parseFloat(timeInSeconds).toFixed(3),
+  hours = Math.floor(time / 60 / 60),
+  minutes = Math.floor(time / 60) % 60,
+  seconds = Math.floor(time - minutes * 60),
+  milliseconds = time.slice(-3);
+
+  //return pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 3);
+  return pad(minutes, 2) + ':' + pad(seconds, 2);
 }
