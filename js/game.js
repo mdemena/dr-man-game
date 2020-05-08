@@ -48,7 +48,7 @@ class Game {
           this.isWinner = true;
           this.isRunning = false;
           this.runningAudio.stop();
-          this.winAudio,play();
+          this.winAudio.play();
           this.showMessage();
         } 
         else {
