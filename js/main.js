@@ -2,7 +2,6 @@ const imgPILL = new Image();
 imgPILL.src = './img/medicine.png';
 const imgCOVID = new Image();
 imgCOVID.src = './img/coronavirus.png';
-//let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png','./img/pacman.png','./img/habitaclia.png','./img/fotocasa.png']
 let arrImgDrMan = ['./img/drman.png','./img/RobertDr1.png','./img/RobertDr3.png','./img/pacman.png']
 arrImgDrMan = arrImgDrMan.map(src => {
     let pImg = new Image();
@@ -31,14 +30,6 @@ const main = () => {
                 break;
             case "4":
                 imgDRMAN = arrImgDrMan[3]
-                break;
-            case "h":
-                imgDRMAN = arrImgDrMan[4]
-                imgPILL.src = './img/idealista.png';
-                break;
-            case "f":
-                imgDRMAN = arrImgDrMan[5]
-                imgPILL.src = './img/idealista.png';
                 break;
             default:    
                 imgDRMAN = arrImgDrMan[0]

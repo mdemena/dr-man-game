@@ -73,9 +73,9 @@ class Figure {
     }
     checkCollision(pFigure){
         //const collideRight = (this.centerX + (this.width / 2) + this.speed) > (pFigure.centerX - (pFigure.width / 2));
+        //const collideTop = (this.centerY + (this.height / 2) + this.speed) >= pFigure.centerY - (pFigure.height / 2));
         const collideRight = (this.centerX + (this.width / 2) + this.speed) + this.refinementPosition >= pFigure.x;
         const collideLeft = (this.centerX - (this.width / 2) - this.speed) + this.refinementPosition <= (pFigure.centerX + (pFigure.width / 2));
-        //const collideTop = (this.centerY + (this.height / 2) + this.speed) >= pFigure.centerY - (pFigure.height / 2));
         const collideTop = (this.centerY + (this.height / 2) + this.speed) + this.refinementPosition >= pFigure.y;
         const collideBottom = (this.centerY - (this.height / 2) - this.speed) + this.refinementPosition <= (pFigure.centerY + (pFigure.height / 2));
     

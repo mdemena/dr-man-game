@@ -118,8 +118,6 @@ class Game {
     pImgsDRMAN.forEach((img,idx) => new DrMan(this.canvas, 320 + (idx*60), 400, 40, 0, img).draw(true));
     this.context.font = "20px 'Press Start 2P'"
     this.context.fillText("Press 1, 2, 3 or 4 !!!", 200, 450);
-    // this.context.font = "10px 'Press Start 2P'"
-    // this.context.fillText("If you are an Habitaclia or Fotocasa worker use your special key!!", 100, 475);
     new Covid(this.canvas, 350, 520, 40, 0, pImgCOVID).draw();
     new Covid(this.canvas, 410, 520, 40, 0, pImgCOVID).draw();
     new Covid(this.canvas, 470, 520, 40, 0, pImgCOVID).draw();
